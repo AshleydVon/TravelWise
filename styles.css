@@ -1,0 +1,60 @@
+body {
+  font-family: 'Major Mono Display', monospace;
+  background-image: url('https://wallpaper.forfun.com/fetch/8b/8bd0a662d3678fa9c7407ffb7ed0d9a4.jpeg?w=1470&r=0.5625');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  margin: 0;
+  padding: 20px;
+  color: #fff; /* Adjust text color for better readability */
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.7); /* Dark background with transparency */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+h1, h2 {
+  font-family: 'Major Mono Display', monospace;
+  color: #fff; /* White color for headings */
+}
+
+input[type="text"] {
+  width: calc(100% - 100px);
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+button {
+  padding: 10px 20px;
+  background: rgb(99, 187, 241);
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: rgb(255, 175, 22);
+}
+
+#weather, #activities {
+  margin-top: 20px;
+}
+
+#activities-list {
+  list-style: none;
+  padding: 0;
+}
+
+#activities-list li {
+  padding: 5px 0;
+  border-bottom: 1px solid #ddd;
+}

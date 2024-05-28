@@ -13,9 +13,9 @@ const apiKeyAmadeus='Ec4DHZL6kMcHpTShrIZ2RDmZiTsv2INs';
 const apiKeyOpenWeather='0d552094f106990cbff9be54fa9c4761';
 
 let accessToken ="";
-let expiresAt = "";
+let expiresAt = JSON.parse(localStorage.getItem('expires'));
 
-
+//0d29kRuZRbWHcs6tXwquGbztzMUcMucaL4SB3Dhvop5AhAB6EdfWV0wb (Pexels API Key for Images)
 //initiate the client object
 const client = {
     clientId:'TjoaeFDE9hRkdigYZ5PvG6xgmnEprNWn',
@@ -42,7 +42,9 @@ const formSubmissionHandler = function(event){
         // pointOfInterestFourEl.textContent = '';
         // pointOfInterestFiveEl.textContent = '';
         document.getElementById('city-input-form').reset();
-        loadAccessToken(client);
+        if (expiresAt < 0 || expiresAt == null){
+            loadAccessToken(client);
+        };
         getLocationData(cityName, apiKeyOpenWeather);
         
       
@@ -98,7 +100,8 @@ const getPointsOfInterests = function (location, cityName, apiKey){
                     return res.json();
                 }).then(function(data){
                     console.log(data);
-                    
+                    localStorage.removeItem('activities');
+                    localStorage.setItem('activities',JSON.stringify(data)); 
                 });
                 console.log(`Bearer ${access}`);
             }else{
@@ -133,26 +136,56 @@ function loadAccessToken(client) {
         
     }
 
-
-
+//store token and time in localStorage as "database" 
 function storeAccessToken(response) {
     console.log(response);
     accessToken = response.access_token;
     localStorage.setItem('token',JSON.stringify(accessToken)); 
-    expiresAt = Date.now() + (response.expires_in * 1000); 'access_token'
+    expiresAt = response.expires_in; 'access_token'
     console.log(accessToken);
+    localStorage.removeItem('expires');
     console.log(expiresAt);
+
     localStorage.setItem('expires',JSON.stringify(expiresAt)); 
     
   }
-
+//load new token at the start of the web page and clear local storage to have full 30min with the new token
 function start(){
+    localStorage.clear();
     loadAccessToken(client);
 }
+//reduce the token time to determin when to get a new token
+const timeCheck = function (expiresAt){
+    console.log(expiresAt);
+    if (expiresAt!=null){
+        // console.log (expiresAt);
+        expiresAt = JSON.parse(localStorage.getItem('expires'));
+        expiresAt = expiresAt+TOKEN_BUFFER;
+        console.log (expiresAt);
+        const timeInterval = setInterval(function(){
+             expiresAt = JSON.parse(localStorage.getItem('expires'));
+             console.log("here2");
+             expiresAt--;
+             console.log (expiresAt);
+             localStorage.setItem('expires',JSON.stringify(expiresAt)); 
 
-// start();
+             if (expiresAt<0 || expiresAt==null){
+                //  clearInterval(timeInterval);
+                 loadAccessToken(client);
+                 timeCheck(expiresAt);
+             }
+         }, 1000)
+        console.log(expiresAt);
+    }else{
+        expiresAt = JSON.parse(localStorage.getItem('expires'));
+        timeCheck(expiresAt);
+    }
+}
+
+start();
 
 searchFormEl.addEventListener('submit', formSubmissionHandler);
+timeCheck(expiresAt);
 
 
 

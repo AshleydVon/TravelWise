@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -10,21 +9,55 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Weather and Tourist Activities</title>
+  <style>
+    .container {
+      font-family: 'Major Mono Display', monospace;
+      padding: 20px;
+    }
+    .column {
+      float: left;
+      width: 50%;
+      padding: 10px;
+    }
+    .results:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 10px;
+      margin: 10px 0;
+      background-color: #f9f9f9;
+    }
+
+    #activities {
+      background-size: cover;
+      background-position: center;
+      padding: 20px;
+      color: white;
+    }
+    
+  </style>
 </head>
 <body>
   <div class="container">
     <h1>Check Weather and Tourist Activities</h1>
     <input type="text" id="location" placeholder="Enter location" />
-    <button id="check"> Your Adventure Starts Here! </button>
+    <button id="check">Your Adventure Starts Here!</button>
 
-    <div id="weather">
-      <h2>Weather</h2>
-      <p id="weather-info"></p>
-    </div>
-
-    <div id="activities">
-      <h2>Tourist Activities</h2>
-      <ul id="activities-list"></ul>
+    <div class="results">
+      <div id="weather" class="column">
+        <h2>Weather</h2>
+        <div id="weather-info"></div>
+        <h3>5-Day Forecast:</h3>
+        <div id="forecast" class="row"></div>
+      </div>
+      <div id="activities" class="column">
+        <h2>Tourist Activities</h2>
+        <ul id="activities-list"></ul>
+      </div>
     </div>
   </div>
 

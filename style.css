@@ -7,12 +7,22 @@ body {
     background-position: center;
     margin: 0;
     padding: 20px;
-    color: #fff; /* Adjust text color for better readability */
+    color: rgb(0, 86, 179); /* Adjust text color for better readability */
   }
   
-  .container {
-    max-width: 600px;
+  .header-container {
+    max-width: 800px;
     margin: 0 auto;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.7); /* Dark background with transparency */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .results-container {
+    max-width: 800px;
+    margin: 20px auto;
     padding: 20px;
     background: rgba(0, 0, 0, 0.7); /* Dark background with transparency */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -21,7 +31,7 @@ body {
   
   h1, h2 {
     font-family: 'Major Mono Display', monospace;
-    color: #fff; /* White color for headings */
+    color: rgb(0, 86, 179); /* White color for headings */
   }
   
   input[type="text"] {
@@ -34,7 +44,7 @@ body {
   
   button {
     padding: 10px 20px;
-    background: rgb(99, 187, 241);
+    background: #007bff;
     border: none;
     color: white;
     border-radius: 4px;
@@ -42,11 +52,20 @@ body {
   }
   
   button:hover {
-    background: rgb(255, 175, 22);
+    background: #0056b3;
   }
   
-  #weather, #activities {
-    margin-top: 20px;
+  .results {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .column {
+    flex: 1;
+    padding: 10px;
+    margin: 10px;
+    background: rgba(255, 255, 255, 0.2); /* Slightly transparent columns */
+    border-radius: 8px;
   }
   
   #activities-list {

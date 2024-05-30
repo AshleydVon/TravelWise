@@ -59,11 +59,11 @@ $(document).ready(function() {
     function getActivities(location) {
       // Dummy list of activities
       const activities = [
-        'Visit the local museum',
-        'Go on a city tour',
-        'Check out the best restaurants',
-        'Take a walk in the park',
-        'Attend a cultural event'
+        // 'Visit the local museum',
+        // 'Go on a city tour',
+        // 'Check out the best restaurants',
+        // 'Take a walk in the park',
+        // 'Attend a cultural event'
       ];
       $('#activities-list').empty();
       activities.forEach(activity => {

@@ -30,17 +30,12 @@ const amadeusUrl='https://test.api.amadeus.com/v1/security/oauth2/token';
 
 
 const formSubmissionHandler = function(event){
-    console.log("I am here2");
+    // console.log("I am here2");
     event.preventDefault();
     const cityName=cityNameInputEl.value.trim();
 
     if (cityName){
-        // pointsOfInterestDisplayEl.textContent = '';
-        // pointOfInterestOneEl.textContent = '';
-        // pointOfInterestTwoEl.textContent = '';
-        // pointOfInterestThreeEl.textContent = '';
-        // pointOfInterestFourEl.textContent = '';
-        // pointOfInterestFiveEl.textContent = '';
+        
         document.getElementById('city-input-form').reset();
         if (expiresAt < 0 || expiresAt == null){
             loadAccessToken(client);
@@ -99,11 +94,12 @@ const getPointsOfInterests = function (location, cityName, apiKey){
                     
                     return res.json();
                 }).then(function(data){
-                    console.log(data);
-                    localStorage.removeItem('activities');
+                    // console.log(data);
+                    // localStorage.removeItem('activities');
                     localStorage.setItem('activities',JSON.stringify(data)); 
+                    displayActivities();
                 });
-                console.log(`Bearer ${access}`);
+                // console.log(`Bearer ${access}`);
             }else{
                 alert("No Token yet");
                 return;
@@ -156,17 +152,17 @@ function start(){
 }
 //reduce the token time to determin when to get a new token
 const timeCheck = function (expiresAt){
-    console.log(expiresAt);
+    // console.log(expiresAt);
     if (expiresAt!=null){
         // console.log (expiresAt);
         expiresAt = JSON.parse(localStorage.getItem('expires'));
         expiresAt = expiresAt+TOKEN_BUFFER;
-        console.log (expiresAt);
+        // console.log (expiresAt);
         const timeInterval = setInterval(function(){
              expiresAt = JSON.parse(localStorage.getItem('expires'));
-             console.log("here2");
+            //  console.log("here2");
              expiresAt--;
-             console.log (expiresAt);
+            //  console.log (expiresAt);
              localStorage.setItem('expires',JSON.stringify(expiresAt)); 
 
              if (expiresAt<0 || expiresAt==null){
@@ -175,12 +171,30 @@ const timeCheck = function (expiresAt){
                  timeCheck(expiresAt);
              }
          }, 1000)
-        console.log(expiresAt);
+        // console.log(expiresAt);
     }else{
         expiresAt = JSON.parse(localStorage.getItem('expires'));
         timeCheck(expiresAt);
     }
 }
+
+const displayActivities = function(){
+    activityData = JSON.parse(localStorage.getItem('activities'));
+    if (activityData.length===0){
+        alert("No Activities Posted");
+        return;
+    }
+   
+    let i=10;
+    console.log(activityData.data[0].name)
+    for (let i=0; i<11; i++){
+        console.log("here2");
+        $('#activities-list').append(`<li>${activityData.data[i].name}</li>`);
+       
+    }
+    
+      
+};
 
 start();
 

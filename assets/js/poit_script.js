@@ -3,14 +3,11 @@ const cityNameInputEl=document.querySelector('#location');
 
 const pointsOfInterestDisplayEl=document.querySelector('#current-card');
 const pointsOfInterestContainerEl=document.querySelector('#city-links');
-const pointOfInterestOneEl=document.querySelector('#dayone-card');
-const pointOfInterestTwoEl=document.querySelector('#daytwo-card');
-const pointOfInterestThreeEl=document.querySelector('#daythree-card');
-const pointOfInterestFourEl=document.querySelector('#dayfour-card');
-const pointOfInterestFiveEl=document.querySelector('#dayfive-card');
+
 const cityLinkEl=document.querySelector('#city-links');
 const apiKeyAmadeus='Ec4DHZL6kMcHpTShrIZ2RDmZiTsv2INs';
 const apiKeyOpenWeather='0d552094f106990cbff9be54fa9c4761';
+const unsplashAccessKey = '0if3GrDUIH6iysaGK3ST5e-E-EBHqEfaRjhEcoPySwE'; // Your Unsplash API key
 
 let accessToken ="";
 let expiresAt = JSON.parse(localStorage.getItem('expires'));
@@ -33,19 +30,52 @@ const formSubmissionHandler = function(event){
     // console.log("I am here2");
     event.preventDefault();
     const cityName=cityNameInputEl.value.trim();
-
+    localStorage.setItem('cities',JSON.stringify(cityName)); 
+    
     if (cityName){
-        
         document.getElementById('city-input-form').reset();
         if (expiresAt < 0 || expiresAt == null){
             loadAccessToken(client);
         };
         getLocationData(cityName, apiKeyOpenWeather);
-        
-      
-    }else{
+        }else{
         alert('No city name available')
         return;
+    }
+    storeLocation(cityName);
+}
+
+const storeLocation = function (cityName){
+    let cityCheck = false;
+    let cityLinks=JSON.parse(localStorage.getItem('cityLinks'));
+    
+    console.log(cityName);
+    console.log(cityLinks);
+    if (!cityLinks){
+        console.log("what??")
+        cityLinks=[];
+        cityLinks.push(cityName);
+        localStorage.setItem('cityLinks',JSON.stringify(cityLinks));
+    }else{
+        
+        for (i=0; i<cityLinks.length; i++){
+            if (cityLinks[i] === cityName){
+                
+                cityCheck=true;   
+            }
+        }
+        if (cityCheck===false){
+            if (cityLinks.length != 10){
+                console.log('here we are')
+                cityLinks.push(cityName);
+                localStorage.setItem('cityLinks',JSON.stringify(cityLinks));
+            }else{
+                cityLinks=[];
+                cityLinks.push(cityName);
+                cityCheck=false;
+                localStorage.setItem('cityLinks',JSON.stringify(cityLinks));
+            }
+        }    
     }
 }
 //Get the Geo Location for the Amadeus Request
@@ -94,21 +124,16 @@ const getPointsOfInterests = function (location, cityName, apiKey){
                     
                     return res.json();
                 }).then(function(data){
-                    // console.log(data);
-                    // localStorage.removeItem('activities');
+                    
                     localStorage.setItem('activities',JSON.stringify(data)); 
                     displayActivities();
                 });
-                // console.log(`Bearer ${access}`);
+                
             }else{
                 alert("No Token yet");
                 return;
             }
     };
-//url when server is back up 
-    //https://test.api.amadeus.com/v1/reference-data/locations/pois?latitude=${lat}&longitude=${lon}&radius=1&page%5Blimit%5D=10&page%5Boffset%5D=0
-
-
 
 //function to get the token with a HTML POST request
 function loadAccessToken(client) {
@@ -126,7 +151,7 @@ function loadAccessToken(client) {
       })
       //extract the data with the token and the expire time and parse it to the function
       .then(function(data){
-        console.log(data);
+        // console.log(data);
         storeAccessToken(data);
       });
         
@@ -134,11 +159,11 @@ function loadAccessToken(client) {
 
 //store token and time in localStorage as "database" 
 function storeAccessToken(response) {
-    console.log(response);
+    // console.log(response);
     accessToken = response.access_token;
     localStorage.setItem('token',JSON.stringify(accessToken)); 
     expiresAt = response.expires_in; 'access_token'
-    console.log(accessToken);
+    // console.log(accessToken);
     localStorage.removeItem('expires');
     console.log(expiresAt);
 
@@ -147,7 +172,7 @@ function storeAccessToken(response) {
   }
 //load new token at the start of the web page and clear local storage to have full 30min with the new token
 function start(){
-    localStorage.clear();
+    // localStorage.clear();
     loadAccessToken(client);
 }
 //reduce the token time to determin when to get a new token
@@ -177,24 +202,52 @@ const timeCheck = function (expiresAt){
         timeCheck(expiresAt);
     }
 }
-
+//display up to 20 Activities
 const displayActivities = function(){
     activityData = JSON.parse(localStorage.getItem('activities'));
-    if (activityData.length===0){
-        alert("No Activities Posted");
+    // console.log(activityData);
+    if (activityData.length==0 || typeof activityData == 'undefined' || activityData == null || activityData.data.length==0){
+        // console.log("here");
+        alert("No Activities Posted. Was a City selected?");
         return;
     }
    
-    let i=10;
-    console.log(activityData.data[0].name)
-    for (let i=0; i<11; i++){
-        console.log("here2");
-        $('#activities-list').append(`<li>${activityData.data[i].name}</li>`);
-       
+    // console.log(activityData.data[0].name)
+    $('#activities-list').empty();  
+    for (let i=0; i < activityData.data.length; i++){
+        // console.log("here2");
+        if (typeof activityData.data[i].name == 'undefined' || activityData.data[i].name == null){
+            alert("no data present");
+            return;
+        }else{
+            if (i<20){
+                $('#activities-list').append(`<li>${activityData.data[i].name}</li>`);
+            }else{
+                return;
+            }
+          }
     }
-    
-      
+    let location = JSON.parse(localStorage.getItem('cities'));
+    updateBackgroundImage(location);
 };
+//update the Background per location searched for
+const updateBackgroundImage = function (location) {
+    // console.log("here I am")
+    const unsplashUrl = `https://api.unsplash.com/search/photos?query=${location}&client_id=${unsplashAccessKey}`;
+
+    fetch(unsplashUrl)
+      .then(response => response.json())
+      .then(data => {
+        if (data.results.length > 0) {
+          const imageUrl = data.results[0].urls.regular;
+          $('#activities').css('background-image', `url(${imageUrl})`);
+          
+        } else {
+          console.error('No images found for the location.');
+        }
+      })
+      .catch(error => console.error('Error fetching image:', error));
+  }
 
 start();
 

@@ -221,18 +221,18 @@ const displayActivities = function(){
             return;
         }else{
             if (i<20){
+                console.log(i);
                 $('#activities-list').append(`<li>${activityData.data[i].name}</li>`);
-            }else{
-                return;
             }
           }
     }
     let location = JSON.parse(localStorage.getItem('cities'));
+    console.log(location);
     updateBackgroundImage(location);
 };
 //update the Background per location searched for
 const updateBackgroundImage = function (location) {
-    // console.log("here I am")
+    console.log("here I am")
     const unsplashUrl = `https://api.unsplash.com/search/photos?query=${location}&client_id=${unsplashAccessKey}`;
 
     fetch(unsplashUrl)

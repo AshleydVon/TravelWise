@@ -1,5 +1,7 @@
 const startDateSelectorEl=document.querySelector('#start-date');
 const endDateSelectorEl=document.querySelector('#end-date');
+const cityLinkEl=document.querySelector('.button expanded');
+
 const weatherApiKey = '25382a741e6bced20fc1f59a53126a82';
     // const unsplashAccessKey = '0if3GrDUIH6iysaGK3ST5e-E-EBHqEfaRjhEcoPySwE'; // Your Unsplash API key
 const historicalWeatherKey = 'CW426NP8AKREJEMSQQFPQG8MG';
@@ -65,7 +67,7 @@ function updateForecast(data) {
       for (let i = 0; i < 5; i ++) {
         const forecast = data.days[i];
         const card = `
-          <div class="col-md-2 card">
+          <div class="card history-card">
             <h5>${forecast.datetime}</h5>
             <p>Temp: ${forecast.temp}°F</p>
             <p>Wind: ${forecast.windspeed} mph</p>
@@ -94,7 +96,4 @@ function updateForecast(data) {
         alert('Please enter all required data.');
       }
     });
-  
-
- 
   

@@ -4,7 +4,10 @@ const cityNameInputEl=document.querySelector('#location');
 const pointsOfInterestDisplayEl=document.querySelector('#current-card');
 const pointsOfInterestContainerEl=document.querySelector('#city-links');
 
-const cityLinkEl=document.querySelector('#city-links');
+const startDteSelectorEl=document.querySelector('#start-date');
+const endDteSelectorEl=document.querySelector('#end-date');
+
+// const cityLinkEl=document.querySelector('#city-links');
 const apiKeyAmadeus='Ec4DHZL6kMcHpTShrIZ2RDmZiTsv2INs';
 const apiKeyOpenWeather='0d552094f106990cbff9be54fa9c4761';
 const unsplashAccessKey = '0if3GrDUIH6iysaGK3ST5e-E-EBHqEfaRjhEcoPySwE'; // Your Unsplash API key
@@ -30,8 +33,15 @@ const formSubmissionHandler = function(event){
     // console.log("I am here2");
     event.preventDefault();
     const cityName=cityNameInputEl.value.trim();
-    localStorage.setItem('cities',JSON.stringify(cityName)); 
+    let startDte = startDteSelectorEl.value.trim();
+    let endDte = endDateSelectorEl.value.trim();
+    startDte = dayjs(startDte).format('YYYY-MM-DD');
+    endDte = dayjs(endDte).format('YYYY-MM-DD');
     
+    citySearch(cityName, startDte, endDte);
+}
+//search the city and ensure it is a valid request
+const citySearch = function (cityName, startDte, endDte){
     if (cityName){
         document.getElementById('city-input-form').reset();
         if (expiresAt < 0 || expiresAt == null){
@@ -42,24 +52,31 @@ const formSubmissionHandler = function(event){
         alert('No city name available')
         return;
     }
-    storeLocation(cityName);
+    storeLocation(cityName, startDte, endDte);
 }
-
-const storeLocation = function (cityName){
+//store the locations in local storage and add the link buttons to the modal
+const storeLocation = function (cityName, startDte, endDte){
     let cityCheck = false;
     let cityLinks=JSON.parse(localStorage.getItem('cityLinks'));
-    
+    let cityData={};
+    cityData = {
+        city: cityName,
+        strt: startDte,
+        end: endDte
+    }
     console.log(cityName);
     console.log(cityLinks);
     if (!cityLinks){
         console.log("what??")
+        
         cityLinks=[];
-        cityLinks.push(cityName);
+        cityLinks.push(cityData);
         localStorage.setItem('cityLinks',JSON.stringify(cityLinks));
+        addCityLinks();
     }else{
         
         for (i=0; i<cityLinks.length; i++){
-            if (cityLinks[i] === cityName){
+            if (cityLinks[i].city === cityName){
                 
                 cityCheck=true;   
             }
@@ -67,17 +84,20 @@ const storeLocation = function (cityName){
         if (cityCheck===false){
             if (cityLinks.length != 10){
                 console.log('here we are')
-                cityLinks.push(cityName);
+                cityLinks.push(cityData);
                 localStorage.setItem('cityLinks',JSON.stringify(cityLinks));
+                addCityLinks();
             }else{
                 cityLinks=[];
-                cityLinks.push(cityName);
+                cityLinks.push(cityData);
                 cityCheck=false;
                 localStorage.setItem('cityLinks',JSON.stringify(cityLinks));
+                addCityLinks();
             }
         }    
     }
 }
+
 //Get the Geo Location for the Amadeus Request
 const getLocationData = function (cityName, apiKey){
         if (typeof cityName==='undefined' || isNaN(cityName)!==true){
@@ -104,6 +124,7 @@ const getLocationData = function (cityName, apiKey){
              return;
          });
      }
+
 //get the points of interest or the activities from Amadeus API
 const getPointsOfInterests = function (location, cityName, apiKey){
         if (location.length===0){
@@ -126,6 +147,7 @@ const getPointsOfInterests = function (location, cityName, apiKey){
                 }).then(function(data){
                     
                     localStorage.setItem('activities',JSON.stringify(data)); 
+                    localStorage.setItem('cities',JSON.stringify(cityName)); 
                     displayActivities();
                 });
                 
@@ -170,11 +192,14 @@ function storeAccessToken(response) {
     localStorage.setItem('expires',JSON.stringify(expiresAt)); 
     
   }
+
 //load new token at the start of the web page and clear local storage to have full 30min with the new token
 function start(){
     // localStorage.clear();
+    addCityLinks();
     loadAccessToken(client);
 }
+
 //reduce the token time to determin when to get a new token
 const timeCheck = function (expiresAt){
     // console.log(expiresAt);
@@ -202,6 +227,7 @@ const timeCheck = function (expiresAt){
         timeCheck(expiresAt);
     }
 }
+
 //display up to 20 Activities
 const displayActivities = function(){
     activityData = JSON.parse(localStorage.getItem('activities'));
@@ -221,20 +247,21 @@ const displayActivities = function(){
             return;
         }else{
             if (i<20){
-                console.log(i);
+                // console.log(i);
                 $('#activities-list').append(`<li>${activityData.data[i].name}</li>`);
             }
           }
     }
     let location = JSON.parse(localStorage.getItem('cities'));
-    console.log(location);
+    // console.log(location);
     updateBackgroundImage(location);
 };
+
 //update the Background per location searched for
 const updateBackgroundImage = function (location) {
-    console.log("here I am")
+    
     const unsplashUrl = `https://api.unsplash.com/search/photos?query=${location}&client_id=${unsplashAccessKey}`;
-
+    // console.log(unsplashUrl)
     fetch(unsplashUrl)
       .then(response => response.json())
       .then(data => {
@@ -249,11 +276,41 @@ const updateBackgroundImage = function (location) {
       .catch(error => console.error('Error fetching image:', error));
   }
 
+  //run application from the links
+  const getLinkCityData = function(){
+    
+    citySearch($(this).attr('city'), $(this).attr('start-date'), $(this).attr('end-date'));
+    getWeather($(this).attr('city'), $(this).attr('start-date'), $(this).attr('end-date'));
+}
+
+//add cities as links maximum number us is 10
+const addCityLinks = function(){
+    let cityArray = JSON.parse(localStorage.getItem('cityLinks'));
+    const cityLinks = $('#city-links');
+    cityLinks.empty();
+    // console.log("here");
+    for (city of cityArray){
+        // console.log(city);
+        //create city link button on the card
+        const cityLinkButton=$('<button>')
+        .addClass('button expanded')
+        .text(city.city)
+        .attr('city', city.city)
+        .attr('start-date', city.strt)
+        .attr('end-date', city.end);
+        cityLinkButton.on('click',getLinkCityData);
+
+        cityLinks.append(cityLinkButton);
+
+    }
+}  
+//render function at start 
 start();
 
 searchFormEl.addEventListener('submit', formSubmissionHandler);
+//call the token expire function
 timeCheck(expiresAt);
-
+//script for the foundation framework
 $(document).foundation();
 
 

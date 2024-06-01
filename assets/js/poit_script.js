@@ -7,7 +7,7 @@ const pointsOfInterestContainerEl=document.querySelector('#city-links');
 const startDteSelectorEl=document.querySelector('#start-date');
 const endDteSelectorEl=document.querySelector('#end-date');
 
-// const cityLinkEl=document.querySelector('#city-links');
+// const errorEl=document.querySelector('#error-message');
 const apiKeyAmadeus='Ec4DHZL6kMcHpTShrIZ2RDmZiTsv2INs';
 const apiKeyOpenWeather='0d552094f106990cbff9be54fa9c4761';
 const unsplashAccessKey = '0if3GrDUIH6iysaGK3ST5e-E-EBHqEfaRjhEcoPySwE'; // Your Unsplash API key
@@ -49,7 +49,9 @@ const citySearch = function (cityName, startDte, endDte){
         };
         getLocationData(cityName, apiKeyOpenWeather);
         }else{
-        alert('No city name available')
+        $('#myModal').foundation('open'); 
+        $('#error-message').text('No city name available'); //'reveal',
+        // alert('No city name available')
         return;
     }
     storeLocation(cityName, startDte, endDte);
@@ -115,12 +117,16 @@ const getLocationData = function (cityName, apiKey){
                     
                  });
              }else {
-                 alert(`Error:${response.statusText}`);
+                $('#myModal').foundation('open'); 
+                $('#error-message').text(`Error:${response.statusText}`);
+                //  alert(`Error:${response.statusText}`);
                  return;
              }
          })
          .catch(function (error){
-             alert('Unable to connect to OpenWeather');
+            $('#myModal').foundation('open'); 
+            $('#error-message').text('Unable to connect to OpenWeather');
+            //  alert('Unable to connect to OpenWeather');
              return;
          });
      }
@@ -128,7 +134,9 @@ const getLocationData = function (cityName, apiKey){
 //get the points of interest or the activities from Amadeus API
 const getPointsOfInterests = function (location, cityName, apiKey){
         if (location.length===0){
-            alert(`No location data present!`);
+            $('#myModal').foundation('open'); 
+            $('#error-message').text(`No location data present!`);
+            // alert(`No location data present!`);
             return;
         }
         let access = JSON.parse(localStorage.getItem('token'));
@@ -234,7 +242,9 @@ const displayActivities = function(){
     // console.log(activityData);
     if (activityData.length==0 || typeof activityData == 'undefined' || activityData == null || activityData.data.length==0){
         // console.log("here");
-        alert("No Activities Posted. Was a City selected?");
+        $('#myModal').foundation('open'); 
+        $('#error-message').text("No Activities Posted. Was a City selected?");
+        // alert("No Activities Posted. Was a City selected?");
         return;
     }
    
@@ -285,23 +295,26 @@ const updateBackgroundImage = function (location) {
 
 //add cities as links maximum number us is 10
 const addCityLinks = function(){
-    let cityArray = JSON.parse(localStorage.getItem('cityLinks'));
+    let cityArray = [];
+    cityArray = JSON.parse(localStorage.getItem('cityLinks'));
     const cityLinks = $('#city-links');
     cityLinks.empty();
-    // console.log("here");
-    for (city of cityArray){
-        // console.log(city);
-        //create city link button on the card
-        const cityLinkButton=$('<button>')
-        .addClass('button expanded')
-        .text(city.city)
-        .attr('city', city.city)
-        .attr('start-date', city.strt)
-        .attr('end-date', city.end);
-        cityLinkButton.on('click',getLinkCityData);
+    // console.log("hello");
+    if (cityArray !== null){
+        for (city of cityArray){
+            // console.log(city);
+            //create city link button on the card
+            const cityLinkButton=$('<button>')
+            .addClass('button expanded')
+            .text(city.city)
+            .attr('city', city.city)
+            .attr('start-date', city.strt)
+            .attr('end-date', city.end);
+            cityLinkButton.on('click',getLinkCityData);
 
-        cityLinks.append(cityLinkButton);
+            cityLinks.append(cityLinkButton);
 
+        }
     }
 }  
 //render function at start 

@@ -194,3 +194,17 @@ button:hover {
 .history-card{
   background-color: rgba(255, 255, 0, 0.475);
 }
+
+#myModal{
+  background-color: rgba(215, 30, 24, 0.727);
+  border-radius: 20px;
+}
+#error-message{
+  font-size: 30px;
+  color:red;
+}
+#locName{
+  font-weight: bold;
+  font-size:x-large;
+  
+}

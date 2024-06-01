@@ -32,6 +32,7 @@ function getWeather(location, startDate, endDate) {
           if (data.cod === 200) {
             updateCurrentWeather(data);
           } else {
+
             console.error('Error:', data.message);
           }
         })
@@ -45,7 +46,9 @@ function getWeather(location, startDate, endDate) {
             updateForecast(data);
           })
         }else {
-          alert(`Error:${response.statusText}`);
+          $('#myModal').foundation('open'); 
+          $('#error-message').text(`Error: Bad Request`);
+          // alert(`Error:${response.statusText}`);
           return;
         }
       });
@@ -54,7 +57,7 @@ function getWeather(location, startDate, endDate) {
  //update the current Weather Card 
 function updateCurrentWeather(data) {
       $('#weather-info').html(`
-        <p>Location: ${data.name}</p>
+        <p id="locName">Location: ${data.name}</p>
         <p>Temperature: ${data.main.temp}°F</p>
         <p>Wind: ${data.wind.speed} mph</p>
         <p>Humidity: ${data.main.humidity}%</p>
@@ -88,12 +91,18 @@ function updateForecast(data) {
       const location = $('#location').val();
       //Make Sure End Date is after Start Date
       if (Date.parse(endDate) <= Date.parse(startDate)){
-        alert("End Date must be after Start Date");
+        $('#myModal').foundation('open'); 
+        $('#error-message').text("End Date must be after Start Date to get correct Weather Data");
+        return;
+        // alert("End Date must be after Start Date");
         //Make Sure all is entered
       }else if (location && startDate && endDate) {
         getWeather(location, startDate, endDate);
       } else {
-        alert('Please enter all required data.');
+        $('#myModal').foundation('open'); 
+        $('#error-message').text('Please enter all required data.');
+        // alert('Please enter all required data.');
+        return;
       }
     });
   

@@ -1,11 +1,30 @@
+const startDateSelectorEl=document.querySelector('#start-date');
+const endDateSelectorEl=document.querySelector('#end-date');
+const cityLinkEl=document.querySelector('.button expanded');
+
+const weatherApiKey = '25382a741e6bced20fc1f59a53126a82';
+    // const unsplashAccessKey = '0if3GrDUIH6iysaGK3ST5e-E-EBHqEfaRjhEcoPySwE'; // Your Unsplash API key
+const historicalWeatherKey = 'CW426NP8AKREJEMSQQFPQG8MG';
+//Add the datepickers at the start for Start and End-Date
 $(document).ready(function() {
-    const weatherApiKey = '25382a741e6bced20fc1f59a53126a82';
-    const unsplashAccessKey = '0if3GrDUIH6iysaGK3ST5e-E-EBHqEfaRjhEcoPySwE'; // Your Unsplash API key
-  
-    function getWeather(location) {
-      const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${weatherApiKey}&units=metric`;
-      const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${weatherApiKey}&units=metric`;
-  
+  $( "#start-date").datepicker({
+    changeMonth: true,
+    changeYear: true,
+  });
+
+  $( "#end-date").datepicker({
+    changeMonth: true,
+    changeYear: true,
+  });
+});
+
+   
+function getWeather(location, startDate, endDate) {
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${weatherApiKey}&units=imperial`;
+    const forecastUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/${startDate}/${endDate}?key=${historicalWeatherKey}`
+      
+      //`https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${weatherApiKey}&units=metric`;
+      //get current Weather at location
       fetch(weatherUrl)
         .then(response => response.json())
         .then(data => {
@@ -13,90 +32,77 @@ $(document).ready(function() {
           if (data.cod === 200) {
             updateCurrentWeather(data);
           } else {
+
             console.error('Error:', data.message);
           }
         })
         .catch(error => console.error('Error:', error));
-  
+  //get the weather per requested period for five days per historical data
       fetch(forecastUrl)
-        .then(response => response.json())
-        .then(data => {
-          console.log('Forecast Data:', data);
-          if (data.cod === "200") {
+      .then(function(response){
+        if (response.ok){
+          response.json().then(function (data){
+            // console.log('Forecast Data:', data);
             updateForecast(data);
-          } else {
-            console.error('Error:', data.message);
-          }
-        })
-        .catch(error => console.error('Error:', error));
-    }
-  
-    function updateCurrentWeather(data) {
+          })
+        }else {
+          $('#myModal').foundation('open'); 
+          $('#error-message').text(`Error: Bad Request`);
+          // alert(`Error:${response.statusText}`);
+          return;
+        }
+      });
+    };      
+       
+ //update the current Weather Card 
+function updateCurrentWeather(data) {
       $('#weather-info').html(`
-        <p>Location: ${data.name}</p>
-        <p>Temperature: ${data.main.temp}°C</p>
-        <p>Wind: ${data.wind.speed} m/s</p>
+        <p id="locName">Location: ${data.name}</p>
+        <p>Temperature: ${data.main.temp}°F</p>
+        <p>Wind: ${data.wind.speed} mph</p>
         <p>Humidity: ${data.main.humidity}%</p>
       `);
     }
-  
-    function updateForecast(data) {
+//update the historical weather for the requested period   
+function updateForecast(data) {
+    console.log(data);
       $('#forecast').empty();
-      for (let i = 0; i < data.list.length; i += 8) {
-        const forecast = data.list[i];
+      for (let i = 0; i < 5; i ++) {
+        const forecast = data.days[i];
         const card = `
-          <div class="col-md-2 card">
-            <h5>${new Date(forecast.dt_txt).toLocaleDateString()}</h5>
-            <p>Temp: ${forecast.main.temp}°C</p>
-            <p>Wind: ${forecast.wind.speed} m/s</p>
-            <p>Humidity: ${forecast.main.humidity}%</p>
+          <div class="card history-card">
+            <h5>${forecast.datetime}</h5>
+            <p>Temp: ${forecast.temp}°F</p>
+            <p>Wind: ${forecast.windspeed} mph</p>
+            <p>Humidity: ${forecast.humidity}%</p>
           </div>
         `;
         $('#forecast').append(card);
       }
     }
-  
-    function getActivities(location) {
-      // Dummy list of activities
-      const activities = [
-        // 'Visit the local museum',
-        // 'Go on a city tour',
-        // 'Check out the best restaurants',
-        // 'Take a walk in the park',
-        // 'Attend a cultural event'
-      ];
-      $('#activities-list').empty();
-      activities.forEach(activity => {
-        $('#activities-list').append(`<li>${activity}</li>`);
-      });
-  
-      updateBackgroundImage(location);
-    }
-  
-    function updateBackgroundImage(location) {
-      const unsplashUrl = `https://api.unsplash.com/search/photos?query=${location}&client_id=${unsplashAccessKey}`;
-  
-      fetch(unsplashUrl)
-        .then(response => response.json())
-        .then(data => {
-          if (data.results.length > 0) {
-            const imageUrl = data.results[0].urls.regular;
-            $('#activities').css('background-image', `url(${imageUrl})`);
-          } else {
-            console.error('No images found for the location.');
-          }
-        })
-        .catch(error => console.error('Error fetching image:', error));
-    }
-  
-    $('#check').click(function() {
+//Button click event for the "Adventure Button"
+  $('#check').click(function() {
+    let startDate=startDateSelectorEl.value.trim();
+    let endDate=endDateSelectorEl.value.trim();
+    console.log(startDate);
+    startDate=dayjs(startDate).format('YYYY-MM-DD');
+    endDate=dayjs(endDate).format('YYYY-MM-DD');
+    console.log(startDate);
       const location = $('#location').val();
-      if (location) {
-        getWeather(location);
-        getActivities(location);
+      //Make Sure End Date is after Start Date
+      if (Date.parse(endDate) <= Date.parse(startDate)){
+        $('#myModal').foundation('open'); 
+        $('#error-message').text("End Date must be after Start Date to get correct Weather Data");
+        return;
+        // alert("End Date must be after Start Date");
+        //Make Sure all is entered
+      }else if (location && startDate && endDate) {
+        getWeather(location, startDate, endDate);
       } else {
-        alert('Please enter a location.');
+        $('#myModal').foundation('open'); 
+        $('#error-message').text('Please enter all required data.');
+        // alert('Please enter all required data.');
+        return;
       }
     });
-  });
   

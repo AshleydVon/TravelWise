@@ -38,6 +38,11 @@ h1, h2 {
   font-size: 2em; 
   font-weight: bold; 
 }
+h3 {
+  font-family: 'Fondamento', cursive;
+  font-size: 2em; 
+  font-weight: bold;
+}
 
 input[type="text"] {
   width: calc(100% - 100px);
@@ -48,6 +53,9 @@ input[type="text"] {
   font-family: 'Fondamento', cursive;
   font-size: 1.2em; 
 }
+input[type="text"] {
+  font-size: 1em; 
+}
 
 button {
   padding: 10px 20px;
@@ -57,8 +65,11 @@ button {
   border-radius: 4px;
   cursor: pointer;
   font-family: 'Fondamento', cursive;
-  font-size: 1.2em; 
+  font-size: 1.2; 
   font-weight: bold; 
+}
+button {
+  font-size: 1em; 
 }
 
 button:hover {
@@ -70,12 +81,21 @@ button:hover {
   justify-content: space-between;
 }
 
+.results:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 .column {
   flex: 1;
   padding: 10px;
   margin: 10px;
   background: rgba(255, 255, 255, 0.2); 
   border-radius: 8px;
+  float: left;
+  width: 50%;
+  padding: 10px;
 }
 
 #activities-list {
@@ -87,6 +107,9 @@ button:hover {
   padding: 5px 0;
   border-bottom: 1px solid #ddd;
   font-size: 1.2em; 
+  color:#fff;
+  text-shadow: 3px 3px #000;
+  font-weight: bold;
 }
 
 .container {
@@ -94,6 +117,9 @@ button:hover {
   padding: 20px;
   font-size: 1.2em; 
   font-weight: bold; 
+}
+.container {
+  font-size: 18px;
 }
 
 .card {
@@ -105,6 +131,9 @@ button:hover {
   font-size: 1.2em; 
   font-weight: bold; 
 }
+.card {
+  font-size: 18px;
+}
 
 #activities {
   background-size: cover;
@@ -113,4 +142,69 @@ button:hover {
   color:  rgb(0, 86, 179);
   font-size: 1.2em; 
   font-weight: bold; 
+}
+
+.date {
+  float:left; 
+  display:inline; 
+  width: 50%;
+}
+
+.buttons{
+  margin-bottom: 4px;
+}
+
+#history{
+  padding: 10px 20px;
+  background: #007bff;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Fondamento', cursive;
+  font-size: 1.2; 
+  font-weight: bold; 
+  margin-left: 20px;
+}
+
+#history{
+  font-size: 1em; 
+}
+
+#history:hover{
+  background: #0056b3;
+}
+
+.close-button{
+  color: white;
+  border-radius: 10px;
+  background-color: #007bff90;
+}
+
+.header4{
+  font-family: 'Fondamento', cursive;
+  font-size: 2em; 
+  font-weight: bold;
+}
+
+#example2{
+  background-color: rgba(215, 190, 24, 0.727);
+  border-radius: 20px;
+}
+.history-card{
+  background-color: rgba(255, 255, 0, 0.475);
+}
+
+#myModal{
+  background-color: rgba(215, 30, 24, 0.727);
+  border-radius: 20px;
+}
+#error-message{
+  font-size: 30px;
+  color:red;
+}
+#locName{
+  font-weight: bold;
+  font-size:x-large;
+  
 }

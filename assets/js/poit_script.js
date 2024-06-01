@@ -254,6 +254,7 @@ start();
 searchFormEl.addEventListener('submit', formSubmissionHandler);
 timeCheck(expiresAt);
 
+$(document).foundation();
 
 
 

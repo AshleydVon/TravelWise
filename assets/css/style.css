@@ -153,3 +153,41 @@ button:hover {
 .buttons{
   margin-bottom: 4px;
 }
+
+#history{
+  padding: 10px 20px;
+  background: #007bff;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Fondamento', cursive;
+  font-size: 1.2; 
+  font-weight: bold; 
+  margin-left: 20px;
+}
+
+#history{
+  font-size: 1em; 
+}
+
+#history:hover{
+  background: #0056b3;
+}
+
+.close-button{
+  color: white;
+  border-radius: 10px;
+  background-color: #007bff90;
+}
+
+.header4{
+  font-family: 'Fondamento', cursive;
+  font-size: 2em; 
+  font-weight: bold;
+}
+
+#example2{
+  background-color: rgba(215, 190, 24, 0.727);
+  border-radius: 20px;
+}

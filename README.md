@@ -1,9 +1,9 @@
-# TravelWise
-Overview
+## TravelWise
+## Overview
 
 The Travel Weather App is a web application that provides current weather information and tourist activities for a specified location. Users can enter a location and date range to get weather forecasts and find local activities. The app also includes a feature to store and view previously searched locations.
 
-Technologies Used
+## Technologies Used
 
 Frontend:
 HTML
@@ -15,9 +15,9 @@ Visual Crossing Weather API
 Amadeus API (optional)
 Foundation framework
 
-Usage
+## Usage
 
-Enter a Location:
+### Enter a Location:
 
 Use the search bar to enter a location for which you want to see the weather forecast and tourist activities.
 Select Date Range:
@@ -48,7 +48,7 @@ Fully responsive design to ensure a seamless experience across devices.
   deployed website: (https://ashleydvon.github.io/TravelWise/)
   Project Creators: Florian Suess, Christopher Chhim, Ashley Von
 
-Screenshots: 
+### Screenshots: 
 
 ![](./assets/Screen%20Shot%202024-06-03%20at%205.47.15%20PM.png)
 
@@ -58,7 +58,7 @@ Screenshots:
 
 ![](./assets/Screen%20Shot%202024-06-03%20at%205.48.44%20PM.png)
 
-Sources:
+### Sources:
 
 Convertcurl - (https://curlconverter.com/javascript/)
 Stackoverflow-(https://stackoverflow.com/)

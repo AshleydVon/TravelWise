@@ -11,9 +11,10 @@ HTML
 CSS
 JavaScript
 APIs:
-OpenWeatherMap API
-Visual Crossing Weather API
-Amadeus API (optional)
+OpenWeatherMap API (current Weather and geo location)
+Visual Crossing Weather API (historical Weather)
+Amadeus API (Activities)
+Unsplash API (Images)
 Foundation framework
 
 ## Usage
@@ -45,7 +46,9 @@ Responsive Design:
 Fully responsive design to ensure a seamless experience across devices.
 
 
-  github: (https://github.com/AshleydVon/TravelWise)
+### GitHub: 
+A
+  (https://github.com/AshleydVon/TravelWise)
   deployed website: (https://ashleydvon.github.io/TravelWise/)
   Project Creators: Florian Suess, Christopher Chhim, Ashley Von
 

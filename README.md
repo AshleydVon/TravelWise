@@ -9,18 +9,11 @@ Frontend:
 HTML
 CSS
 JavaScript
-React
-Backend:
-Node.js
-Express
 APIs:
 OpenWeatherMap API
 Visual Crossing Weather API
 Amadeus API (optional)
-Other Tools:
-Git for version control
-Webpack for module bundling
-Babel for JavaScript compilation
+Foundation framework
 
 Usage
 

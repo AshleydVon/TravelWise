@@ -52,11 +52,8 @@ Fully responsive design to ensure a seamless experience across devices.
 
 
   github: (https://github.com/AshleydVon/TravelWise)
-  deployed website: (http://127.0.0.1:5501/index.html)
-  Project Creators: Florian, Christopher Chin, Ashley Von
+  deployed website: (https://ashleydvon.github.io/TravelWise/)
+  Project Creators: Florian Suess, Christopher Chhim, Ashley Von
 
 Screenshots: 
-<script> src="./assets/Screen Shot 2024-06-03 at 5.47.15 PM.png"
-  <script src="assets/Screen Shot 2024-06-03 at 5.47.53 PM.png"
-  <script src="/assets/Screen Shot 2024-06-03 at 5.48.28 PM.png"
-  <script src="./assets/Screen Shot 2024-06-03 at 5.48.44 PM.png"
+! [](./assets/Screen%20Shot%202024-06-03%20at%205.47.15%20PM.png)

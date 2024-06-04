@@ -60,8 +60,7 @@ Screenshots:
 
 Sources:
 
-Convertcurl 
-Stackoverflow
-MDM
-W3
-Shecodes
+Convertcurl - (https://curlconverter.com/javascript/)
+Stackoverflow-(https://stackoverflow.com/)
+W3-(https://www.w3schools.com/)
+MDM- (https://developer.mozilla.org/en-US/docs/Learn)

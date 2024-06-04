@@ -1,4 +1,4 @@
-const startDateSelectorEl=document.querySelector('#start-date');
+ const startDateSelectorEl=document.querySelector('#start-date');
 const endDateSelectorEl=document.querySelector('#end-date');
 const cityLinkEl=document.querySelector('.button expanded');
 

@@ -56,4 +56,11 @@ Fully responsive design to ensure a seamless experience across devices.
   Project Creators: Florian Suess, Christopher Chhim, Ashley Von
 
 Screenshots: 
-! [](./assets/Screen%20Shot%202024-06-03%20at%205.47.15%20PM.png)
+
+![](./assets/Screen%20Shot%202024-06-03%20at%205.47.15%20PM.png)
+
+![](./assets/Screen%20Shot%202024-06-03%20at%205.47.53%20PM.png)
+
+![](./assets/Screen%20Shot%202024-06-03%20at%205.48.28%20PM.png)
+
+![](./assets/Screen%20Shot%202024-06-03%20at%205.48.44%20PM.png)
